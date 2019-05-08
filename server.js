@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const router = require("./routes");
 
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
-
+app.use("/", router);
 const dbConfig = require("./config/database.config.js");
 const mongoose = require("mongoose");
 
