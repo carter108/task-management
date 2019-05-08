@@ -11,6 +11,25 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
 
+const dbConfig = require("./config/database.config.js");
+const mongoose = require("mongoose");
+
+mongoose.Promise = global.Promise;
+
+console.log("db", dbConfig.url);
+
+mongoose
+  .connect(dbConfig.url, {
+    useNewUrlParser: true
+  })
+  .then(() => {
+    console.log("Connected");
+  })
+  .catch(err => {
+    console.log("Connect to database failed");
+    process.exit();
+  });
+
 app.get("/", (req, res) => {
   res.json({ message: "Hello World" });
 });
