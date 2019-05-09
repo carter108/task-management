@@ -1,5 +1,5 @@
-import User from "../models/user";
-import Utils from "../utils";
+import User from "models/user";
+import Utils from "utils";
 
 export const getUsers = async (req, res, next) => {
   try {

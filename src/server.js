@@ -2,8 +2,8 @@ require("dotenv").config();
 import express from "express";
 import bodyParser from "body-parser";
 import morgan from "morgan";
-import router from "./routes";
-import { errorHandler } from "./middleware";
+import router from "routes";
+import { errorHandler } from "middleware";
 import mongoose from "mongoose";
 const app = express();
 
