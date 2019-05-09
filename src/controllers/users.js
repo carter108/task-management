@@ -1,7 +1,7 @@
-const User = require("../models/user");
-const Utils = require("../utils");
+import User from "../models/user";
+import Utils from "../utils";
 
-module.exports.getUsers = async (req, res, next) => {
+export const getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.json({ users });
@@ -10,7 +10,7 @@ module.exports.getUsers = async (req, res, next) => {
   }
 };
 
-module.exports.getUser = async (req, res, next) => {
+export const getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -23,7 +23,7 @@ module.exports.getUser = async (req, res, next) => {
   }
 };
 
-module.exports.createUser = async (req, res, next) => {
+export const createUser = async (req, res, next) => {
   if (!req.body.user) {
     return res.status(400).send({
       error: "Invalid user model"
@@ -43,4 +43,10 @@ module.exports.createUser = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+export default {
+  getUsers,
+  getUser,
+  createUser
 };

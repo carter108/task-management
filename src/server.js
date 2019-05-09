@@ -1,10 +1,10 @@
 require("dotenv").config();
-const express = require("express");
-const bodyParser = require("body-parser");
-const morgan = require("morgan");
-const router = require("./routes");
-const middleware = require("./middleware");
-
+import express from "express";
+import bodyParser from "body-parser";
+import morgan from "morgan";
+import router from "./routes";
+import { errorHandler } from "./middleware";
+import mongoose from "mongoose";
 const app = express();
 
 app.use(morgan("combined"));
@@ -14,15 +14,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use("/", router);
-app.use(middleware.errorHandler);
-
-const dbConfig = require("./config/database.config.js");
-const mongoose = require("mongoose");
+app.use(errorHandler);
 
 mongoose.Promise = global.Promise;
 
 mongoose
-  .connect(dbConfig.url, {
+  .connect(process.env.DATABASE_URL, {
     useNewUrlParser: true
   })
   .then(() => {
