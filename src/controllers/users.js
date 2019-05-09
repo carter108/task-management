@@ -1,5 +1,5 @@
 import User from "models/user";
-import Utils from "utils";
+import { hashPassword } from "utils";
 
 export const getUsers = async (req, res, next) => {
   try {
@@ -32,7 +32,7 @@ export const createUser = async (req, res, next) => {
 
   try {
     const { name, password, email } = req.body.user;
-    const passwordHash = await Utils.hashPassword(password);
+    const passwordHash = await hashPassword(password);
     const newUser = new User({
       name,
       password: passwordHash,
