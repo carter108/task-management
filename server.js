@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const router = require("./routes");
+const middleware = require("./middleware");
 
 const app = express();
 
@@ -11,13 +12,14 @@ app.use(morgan("combined"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
+
 app.use("/", router);
+app.use(middleware.errorHandler);
+
 const dbConfig = require("./config/database.config.js");
 const mongoose = require("mongoose");
 
 mongoose.Promise = global.Promise;
-
-console.log("db", dbConfig.url);
 
 mongoose
   .connect(dbConfig.url, {
@@ -27,7 +29,7 @@ mongoose
     console.log("Connected");
   })
   .catch(err => {
-    console.log("Connect to database failed");
+    console.log("Connect to database failed", err);
     process.exit();
   });
 

@@ -1,16 +1,16 @@
 const User = require("../models/user");
 const Utils = require("../utils");
 
-module.exports.getUsers = async (req, res) => {
+module.exports.getUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.json({ users });
   } catch (err) {
-    res.status(500).send({ error: err });
+    next(err);
   }
 };
 
-module.exports.getUser = async (req, res) => {
+module.exports.getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
     const user = await User.findById(id);
@@ -19,11 +19,11 @@ module.exports.getUser = async (req, res) => {
     }
     res.json(user);
   } catch (err) {
-    res.status(500).send({ error: err });
+    next(err);
   }
 };
 
-module.exports.createUser = async (req, res) => {
+module.exports.createUser = async (req, res, next) => {
   if (!req.body.user) {
     return res.status(400).send({
       error: "Invalid user model"
@@ -33,7 +33,6 @@ module.exports.createUser = async (req, res) => {
   try {
     const { name, password, email } = req.body.user;
     const passwordHash = await Utils.hashPassword(password);
-    console.log("password", passwordHash);
     const newUser = new User({
       name,
       password: passwordHash,
@@ -42,7 +41,6 @@ module.exports.createUser = async (req, res) => {
     await newUser.save();
     res.send({ user: newUser });
   } catch (err) {
-    console.log("ERROR", err);
-    res.status(500).send({ error: err });
+    next(err);
   }
 };
