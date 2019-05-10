@@ -33,3 +33,12 @@ export const checkToken = (req, res, next) => {
     });
   }
 };
+
+export const taskRequestHandler = (req, res, next) => {
+  const { userId } = req.params;
+  if (userId) {
+    req.userId = userId;
+    return next();
+  }
+  res.status(400).json({ error: "userId is not supplied" });
+};
